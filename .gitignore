@@ -1,0 +1,45 @@
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,obsidian
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,obsidian
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+### Obsidian ###
+# config dir
+.obsidian/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+### User ###
+Textbooks/
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,obsidian
