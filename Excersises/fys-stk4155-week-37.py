@@ -150,16 +150,16 @@ if __name__ == '__main__':
 
     for i in range(max_degree):
         degrees[i] = i + 1
-        # error_train[i], error_test[i], bias[i], variance[i] = bootstrap(x, y, z, degree, 10000, intercept=False)
-        error[i], error_train[i], error_test[i], bias[i], variance[i] = bootstrap_sklearn(x, y, z, i+1, 10000, intercept=False)
+        error_train[i], error_test[i], bias[i], variance[i] = bootstrap(x, y, z, i+1, 100, intercept=False)
+        # error[i], error_train[i], error_test[i], bias[i], variance[i] = bootstrap_sklearn(x, y, z, i+1, 1000, intercept=False)
 
     fig, ax = plt.subplots()
-    ax.plot(degrees, error, label='Train sk')
-    ax.plot(degrees, error_train, label='Train')
-    ax.plot(degrees, error_test, label='Test')
+    # ax.plot(degrees, np.log10(error), label='Train sk')
+    ax.plot(degrees, np.log10(error_train), label='Train')
+    ax.plot(degrees, np.log10(error_test), label='Test')
     # ax.plot(degrees, bias, 'b--', label='Bias')
     # ax.plot(degrees, variance, 'g.', label='Variance')
-    ax.set_xscale('log')
-    ax.set_yscale('log')
+    # ax.set_xscale('log')
+    # ax.set_yscale('log')
     ax.legend()
     plt.show()
