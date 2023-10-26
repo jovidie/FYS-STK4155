@@ -1,7 +1,49 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import jax.numpy as jnp
+from jax import grad
 
+
+class GradientDecent:
+
+    def __init__(self, x) -> None:
+        self.x = 4 + 3*x + x*x
+        self.dx = 3 + 2*x
+
+
+    def func(self):
+        return self.x
+
+
+    def d_func(self):
+        return self.dx
+    
+
+    def grad_func(self):
+        pass
+    
+
+    def design_matrix(self, p):
+        x = self.x.flatten()
+        if p >= 1:
+            n = len(x)
+            X = np.ones((n, p))
+            for i in range(1, p):
+                X[:, i] = x**i
+            return X
+        else: 
+            return np.ones_like(x)
+        
+    
+    def learning_schedule(t, t0, t1):
+        return t0 / (t+t1)
+    
+
+    def solve(self):
+        pass
+        
+        
 
 def func(x):
     return 4 + 3*x + x*x
