@@ -22,7 +22,7 @@
 
 ### VisualStudioCode ###
 .vscode/*
-.code-workspace
+FYS-STK4155.code-workspace
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
