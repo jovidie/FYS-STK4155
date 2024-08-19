@@ -27,7 +27,7 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
-*.code-workspace
+FYS-STK4155.code-workspace
 
 # Local History for Visual Studio Code
 .history/
