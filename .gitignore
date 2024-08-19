@@ -22,12 +22,13 @@
 
 ### VisualStudioCode ###
 .vscode/*
+.vscode/*.code-workspace
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
-FYS-STK4155.code-workspace
+
 
 # Local History for Visual Studio Code
 .history/
