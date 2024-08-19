@@ -1,8 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,obsidian
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,obsidian
 
-### DS ###
-*.DS_Store
+### Other ###
+.DS_Store
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -27,6 +27,7 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
