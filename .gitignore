@@ -1,8 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,obsidian
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux,obsidian
 
-### Linux ###
-*~
+### DS ###
+.DS_Store
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
