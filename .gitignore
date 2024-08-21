@@ -45,4 +45,16 @@ FYS-STK4155.code-workspace
 ### User ###
 Textbooks/
 
+### Latex ###
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls 
+*.log
+*.out
+*.pdf
+*.synctex.gz
+mainNotes.bib
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,obsidian
