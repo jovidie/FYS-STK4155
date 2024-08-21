@@ -1,4 +1,8 @@
 \documentclass[reprint,english,notitlepage]{revtex4-1}  % 
+
+\usepackage{silence}
+\WarningFilter{revtex4-1}{Repair the float}
+
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{physics,amssymb} 
@@ -87,8 +91,9 @@
 % \input{sections/draft}
  
 %------------------ Bibliography --------------------------
-% \newpage 
-% \bibliography{references}
+\newpage 
+\nocite{*}
+\bibliography{references}
 
 %------------------ Appendix ------------------------------
 % \newpage
@@ -121,8 +126,8 @@
 \input{sections/exercises/week35}
  
 %------------------ Bibliography ---------------------------
-\newpage 
-\bibliography{references}
+% \newpage 
+% \bibliography{references}
 
 
 %==========================================================
