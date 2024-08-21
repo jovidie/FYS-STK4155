@@ -5,6 +5,8 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
+from models import LinRegression
+
 
 def mse(y_true, y_pred):
     n = np.size(y_pred)
@@ -50,15 +52,33 @@ def exercise_34_3():
     n = 100
     
     x = np.linspace(-3, 3, n)
-    x = x.reshape(-1, 1)
+    # x = x.reshape(-1, 1)
     noise = np.random.normal(0, 0.1, x.shape)
     y = np.exp(-x**2) + 1.5 * np.exp(-(x-2)**2) + noise 
 
-    poly = PolynomialFeatures(degree=4)
-    X = poly.fit_transform(x[:, np.newaxis])
+    # poly = PolynomialFeatures(degree=4)
+    # X = poly.fit_transform(x[:, np.newaxis])
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
+    mse_history = []
+    r2_history = []
+
+    for degree in range(15):
+        model = LinRegression(degree)
+        model.fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+        mse_loss, r2_val = model.loss(y_test, y_pred)
+        mse_history.append(mse_loss)
+        r2_history.append(r2_val)
+
+    d = np.arange(15)
+    fig, ax = plt.subplots()
+    ax.plot(d, mse_history, label="MSE")
+    ax.plot(d, r2_history, label="R2")
+    ax.legend()
+    # plt.show()
+    print(f"Optimal MSE = {mse_history[8]:.4f}, polynomial degree = {np.argmin(mse_history)}")
 
 
 
