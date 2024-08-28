@@ -46,8 +46,8 @@ def exercise_35_2():
     ax.plot(x, y_pred, 'ro', label=f"Own code: MSE = {mse_man:.4f}, R2 = {r2_man:.4f}")
     ax.plot(x, model_pred, 'gx', label=f"SciKit: MSE = {mse_sk:.4f}, R2 = {r2_sk:.4f}")
     ax.legend()
-    # fig.savefig("../latex/figures/week35_ex2.pdf")
-    plt.show()
+    fig.savefig("../latex/figures/week35_ex2.pdf")
+    # plt.show()
 
 
 def exercise_35_3():
@@ -75,17 +75,18 @@ def exercise_35_3():
         r2_history.append(r2_val)
 
     d = np.arange(15)
+    p_optim = np.argmin(mse_history)
     fig, ax = plt.subplots()
     ax.plot(d, mse_history, label="MSE")
     ax.plot(d, r2_history, label="R2")
     ax.legend()
-    # fig.savefig("../latex/figures/week35_ex3.pdf")
-    plt.show()
-    print(f"Optimal MSE = {mse_history[8]:.4f}, polynomial degree = {np.argmin(mse_history)}")
+    ax.set_xlabel(f"Optimal MSE = {mse_history[p_optim]:.4f}, polynomial degree = {np.argmin(mse_history)}")
+    fig.savefig("../latex/figures/week35_ex3.pdf")
+    # plt.show()
 
 
 
 if __name__ == '__main__':
-    # exercise_35_2()
-    # np.random.seed(2024)
+    exercise_35_2()
+    np.random.seed(2024)
     exercise_35_3()
