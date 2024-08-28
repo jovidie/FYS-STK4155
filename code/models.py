@@ -23,7 +23,7 @@ class LinRegression:
         y_pred = X_test @ self._beta
         return y_pred 
     
-    def loss(self, y_true, y_pred):
+    def compute_error(self, y_true, y_pred):
         self._mse = mse(y_true, y_pred)
         self._r2 = r2(y_true, y_pred)
         return self._mse, self._r2
