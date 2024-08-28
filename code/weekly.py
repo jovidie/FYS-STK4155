@@ -17,10 +17,11 @@ def r2(y_true, y_pred):
     denom = np.sum((y_true - np.mean(y_true))**2)
     return 1 - (num / denom)
 
-def exercise_34_2():
+def exercise_35_2():
     x = np.random.rand(100)
     y = 2.0 + 5*x**2 + 0.1*np.random.randn(100)
 
+    # Create design matrix 
     X = np.zeros((len(x), 3))
     X[:, 0] = 1
     X[:, 1] = x 
@@ -41,14 +42,15 @@ def exercise_34_2():
     r2_sk = r2_score(y, model_pred)
     
     fig, ax = plt.subplots()
-    ax.plot(x, y, 'bo')
-    ax.plot(x, y_pred, 'rx', label=f"MSE = {mse_man:.4f}, R2 = {r2_man:.4f}")
-    ax.plot(x, model_pred, 'g.', label=f"MSE = {mse_sk:.4f}, R2 = {r2_sk:.4f}")
+    ax.plot(x, y, 'b.', label="Data")
+    ax.plot(x, y_pred, 'ro', label=f"Own code: MSE = {mse_man:.4f}, R2 = {r2_man:.4f}")
+    ax.plot(x, model_pred, 'gx', label=f"SciKit: MSE = {mse_sk:.4f}, R2 = {r2_sk:.4f}")
     ax.legend()
+    # fig.savefig("../latex/figures/week35_ex2.pdf")
     plt.show()
 
 
-def exercise_34_3():
+def exercise_35_3():
     n = 100
     
     x = np.linspace(-3, 3, n)
@@ -68,7 +70,7 @@ def exercise_34_3():
         model = LinRegression(degree)
         model.fit(x_train, y_train)
         y_pred = model.predict(x_test)
-        mse_loss, r2_val = model.loss(y_test, y_pred)
+        mse_loss, r2_val = model.compute_error(y_test, y_pred)
         mse_history.append(mse_loss)
         r2_history.append(r2_val)
 
@@ -77,12 +79,13 @@ def exercise_34_3():
     ax.plot(d, mse_history, label="MSE")
     ax.plot(d, r2_history, label="R2")
     ax.legend()
-    # plt.show()
+    # fig.savefig("../latex/figures/week35_ex3.pdf")
+    plt.show()
     print(f"Optimal MSE = {mse_history[8]:.4f}, polynomial degree = {np.argmin(mse_history)}")
 
 
 
 if __name__ == '__main__':
-    # exercise_34_2()
-    np.random.seed(2024)
-    exercise_34_3()
+    # exercise_35_2()
+    # np.random.seed(2024)
+    exercise_35_3()
