@@ -85,6 +85,31 @@ def exercise_35_3():
     # plt.show()
 
 
+def exercise_36_2():
+    n = 100
+    lmbdas = [0.0001, 0.001, 0.01, 0.1, 1.0]
+    
+    x = np.linspace(-3, 3, n)
+    noise = np.random.normal(0, 0.1, x.shape)
+    y = np.exp(-x**2) + 1.5 * np.exp(-(x-2)**2) + noise 
+
+    # Scale data as standard scaling, and then split into train test
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+
+    mse_history = []
+    r2_history = []
+
+    for degree in range(15):
+        model = LinRegression(degree)
+        model.fit(x_train, y_train)
+        y_pred = model.predict(x_test)
+        mse_loss, r2_val = model.compute_error(y_test, y_pred)
+        mse_history.append(mse_loss)
+        r2_history.append(r2_val)
+
+
+
 
 if __name__ == '__main__':
     exercise_35_2()
