@@ -1,0 +1,70 @@
+%==========================================================
+\section{Exercise 1}\label{sec:ex1}
+%==========================================================
+Assuming that $f(\mathbf{x})$ is a continuous function, and an error term $\mathbf{\epsilon} ~ N(0, \sigma^{2})$, we can approximate the function with the solution derived from a model $\mathbf{\tilde{y}} = X\mathbf{\beta}$. Which means the data can be described with $\boldsymbol{y} = X\mathbf{\beta} + \mathbf{\epsilon}$, giving the expectation value
+
+\begin{align*}
+    %\hskip\parindent
+    \mathbb{E}(\mathbf{y}) &= \mathbb{E}(X\mathbf{\beta} + \mathbf{\epsilon}) \\
+    &= \mathbb{E}(X\mathbf{\beta}) + \mathbb{E}(\mathbf{\epsilon}) && \text{where the expected value $\mathbf{\epsilon} = 0$} \\
+    \mathbb{E}(y_{i}) &= \sum_{j=0}^{P-1} X_{i,j} \beta_{j} && \text{for the each element} \\
+    &= X_{i,*} \beta && \text{where $_{*}$ replace the sum over index $j$} \\
+\end{align*}
+
+The variance for the element $y_{i}$ 
+\begin{align*}
+    \mathbb{V}(y_{i}) &= \mathbb{E} \big[ (y_{i} - \mathbb{E}(y_{i}))^{2} \big] \\
+    &= \mathbb{E} ((X_{i,*} \beta_{i} + \epsilon_{i})^{2}) - (X_{i,*} \beta_{i})^{2} \\
+    &= \mathbb{E} ((X_{i,*} \beta_{i})^{2}) + \mathbb{E} (2\epsilon_{i}X_{i,*} \beta_{i}) + \mathbb{E} (\epsilon^{2}) - (X_{i,*} \beta_{i})^{2} \\
+    &= (X_{i,*} \beta_{i})^{2} + \mathbb{E} (\epsilon^{2}) - (X_{i,*} \beta_{i})^{2} \\
+    &= \mathbb{E} (\epsilon^{2}) = \sigma^{2} \\
+\end{align*}
+
+With the OLS expression, the optimal parameter is
+\begin{align*}
+    \mathbf{\hat{\beta}} &= (\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T} \mathbf{y} \\
+\end{align*}
+
+The expected value of $\mathbf{\hat{\beta}}$ is 
+\begin{align*}
+    \mathbb{E}(\mathbf{\hat{\beta}}) &= \mathbb{E}((\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T} \mathbf{y}) \\
+    &= (\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T} \mathbb{E}(\mathbf{y}) && \text{using that $\mathbf{X}$ is a non-stochastic variable} \\
+    &= (\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T} \mathbf{X} \mathbf{\beta} && \text{using $\mathbb{E}(\mathbf{y}) = \mathbf{X} \mathbf{\beta}$} \\
+    &= \mathbf{\beta} \\
+\end{align*}
+
+and the variance is 
+\begin{align*}
+    \mathbb{V}(\boldsymbol{\hat{\beta}}) &= \mathbb{E} \big[ (\boldsymbol{\hat{\beta}} - \mathbb{E}(\boldsymbol{\hat{\beta}}))^{2} \big] \\
+    &= \mathbb{E} (((\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \boldsymbol{X}^{T} \boldsymbol{y}) ((\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \boldsymbol{X}^{T} \boldsymbol{y})^{T}) - \boldsymbol{\hat{\beta}}\boldsymbol{\hat{\beta}}^{T}  \\
+    &= \mathbb{E} ((\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \boldsymbol{X}^{T} \boldsymbol{y} \boldsymbol{y}^{T} \boldsymbol{X} (\boldsymbol{X}^{T} \boldsymbol{X})^{-1}) - \boldsymbol{\hat{\beta}}\boldsymbol{\hat{\beta}}^{T}  \\
+    &= (\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \boldsymbol{X}^{T} \mathbb{E} (\boldsymbol{y} \boldsymbol{y}^{T}) \boldsymbol{X} (\boldsymbol{X}^{T} \boldsymbol{X})^{-1} - \boldsymbol{\hat{\beta}}\boldsymbol{\hat{\beta}}^{T}  \\
+    &= \boldsymbol{\beta} \boldsymbol{\beta}^{T} + \sigma^{2}((\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \boldsymbol{X}^{T} \boldsymbol{X} (\boldsymbol{X}^{T} \boldsymbol{X})^{-1}) - \boldsymbol{\hat{\beta}}\boldsymbol{\hat{\beta}}^{T}  \\
+    &= \sigma^{2}(\boldsymbol{X}^{T} \boldsymbol{X})^{-1} \\
+\end{align*}
+
+
+%==========================================================
+\section{Exercise 2}\label{sec:ex2}
+%==========================================================
+Using the optimal $\mathbf{\hat{\beta}}^{Ridge}$, defined as 
+\begin{align*}
+    \boldsymbol{\hat{\beta}}^{Ridge} &= (\boldsymbol{X}^{T}\boldsymbol{X} + \lambda \boldsymbol{I})^{-1} \boldsymbol{X}^{T} \boldsymbol{y} \\
+\end{align*}
+The expectation value is then 
+\begin{align*}
+    \mathbb{E} (\mathbf{\hat{\beta}}^{Ridge}) &= \mathbb{E}((\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y}) \\
+    &= (\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbb{E}( \mathbf{y} ) && \text{since $\mathbf{X}$ and $\lambda \mathbf{I}$ are non-stochastic variables} \\
+    &= (\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{X} \mathbf{\beta} && \text{using $\mathbb{E} (\mathbf{y})$ from exercise 1} \\
+\end{align*}
+For $\lambda = 0$, $\mathbb{E} (\mathbf{\hat{\beta}}^{OLS})$. 
+
+The variance 
+\begin{align*}
+    \mathbb{V}(\mathbf{\hat{\beta}}^{Ridge}) &= \mathbb{E} (\mathbf{\hat{\beta}}_{R} \mathbf{\hat{\beta}}_{R}^{T}) - (\mathbb{E} (\mathbf{\hat{\beta}}_{R}))^{2} \\
+    &= \mathbb{E} (((\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y}) (((\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y}))^{T}) - (\mathbb{E} (\mathbf{\hat{\beta}}_{R}))^{2} \\
+    &= (\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbb{E} (\mathbf{y} \mathbf{y}^{T} ) \mathbf{X} ((\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1})^{T} - (\mathbb{E} (\mathbf{\hat{\beta}}_{R}))^{2} \\
+    &= \sigma^{2}(\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{X} ((\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1})^{T} \\
+\end{align*}
+
+Based on exercises solved and handed in previous semester \cite{willumsen:2023:projects}.
