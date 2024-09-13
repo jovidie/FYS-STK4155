@@ -144,8 +144,8 @@ def evaluate_models():
     ax2.legend()
     ax2.set_title("Test")
     ax2.set_xlabel("Polynomial degree")
-    fig.savefig("../latex/figures/week36_ex2.pdf")
-    # plt.show()
+    # fig.savefig("../latex/figures/week36_ex2.pdf")
+    plt.show()
 
 
 if __name__ == '__main__':
