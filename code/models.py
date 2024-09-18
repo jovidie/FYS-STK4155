@@ -1,8 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
+from abc import ABC, abstractmethod
+
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from utils import mse, r2, design_matrix
+
+class Regression(ABC):
+    """Abstract class for regression models."""
+    @abstractmethod
+    def fit(self, X_train, y_train):
+        pass
+    
+    @abstractmethod
+    def predict(self, X_test):
+        pass
+
+
+class LinearReg(Regression):
+
+    def __init__(self) -> None:
+        self._beta = None
+
+    def fit(self, X_train, y_train):
+        XT = X_train.T
+        XTX = XT @ X_train
+        self._beta = np.linalg.pinv(XTX) @ XT @ y_train 
+
+    def predict(self, X_test):
+        y_pred = X_test @ self._beta
+        return y_pred
 
 class LinRegression:
 
