@@ -1,12 +1,27 @@
+from cProfile import label
 import numpy as np
 import matplotlib.pyplot as plt
+
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+from sklearn.utils import resample
 
-from models import LinRegression
+from models import LinRegression, LinearReg
 
+def design_matrix(x, degree):
+    p = degree
+
+
+    X = np.column_stack((np.ones_like(x), x))
+
+    if degree < 2:
+        return X
+    else:
+        for i in range(2, p+1):
+            X = np.column_stack((X, x**i))
+        return X
 
 def mse(y_true, y_pred):
     n = np.size(y_pred)
@@ -109,9 +124,67 @@ def exercise_36_2():
         r2_history.append(r2_val)
 
 
+def exercise_38():
+    n = 40
+    degree = 14
+    n_bootstraps = 100
+
+    x = np.random.rand(100) # .reshape(-1, 1)
+    noise = np.random.normal(0, 0.1, x.shape)
+    y = np.exp(-x**2) + 1.5 * np.exp(-(x-2)**2) + noise 
+
+    # error_train = np.empty(degree)
+    error_test = np.empty(degree)
+    bias = np.empty(degree)
+    variance = np.empty(degree)
+
+    for p in range(1, degree):
+
+        X = design_matrix(x, p)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+        y_tilde = np.empty((y_train.shape[0], n_bootstraps))
+        y_pred = np.empty((y_test.shape[0], n_bootstraps))
+
+        # mse_train = np.empty(n_bootstraps)
+        mse_test = np.empty(n_bootstraps)
+
+        for i in range(n_bootstraps):
+            X_, y_ = resample(X_train, y_train)
+            model = LinearRegression()
+            model.fit(X_, y_)
+
+            y_tilde[:, i] = model.predict(X_train).ravel()
+            y_pred[:, i] = model.predict(X_test).ravel()
+
+            # mse_train[i] = mse(y_, y_tilde[:, i])
+            mse_test[i] = mse(y_test, y_pred[:, i])
+
+        # error_train[p] = np.mean(mse_train)
+        # error_test[p] = np.mean( np.mean((y_test - y_pred)**2, axis=1, keepdims=True) )
+        # bias[p] = np.mean((y_test - np.mean(y_pred, axis=1, keepdims=True))**2)
+        # variance[p] = np.mean(np.var(y_pred, axis=1, keepdims=True))
+        # error_train[p] = np.mean(mse_train)
+        error_test[p] = np.mean(mse_test)
+        bias[p] = np.mean((y_test - np.mean(y_pred, axis=1))**2)
+        variance[p] = np.mean(np.var(y_pred, axis=1, keepdims=True))
+
+    # return (error_train, error_test, bias, variance)
+    return (error_test, bias, variance)
 
 
 if __name__ == '__main__':
-    exercise_35_2()
+    # exercise_35_2()
     np.random.seed(2024)
-    exercise_35_3()
+    # exercise_35_3()
+    error_test, bias, variance = exercise_38()
+
+    degrees = np.arange(14)
+    fig, ax = plt.subplots()
+    # ax.plot(degrees, error_train, label=r"$\epsilon_{train}$")
+    ax.plot(degrees, error_test, label=r"$\epsilon_{test}$")
+    ax.plot(degrees, bias, label="Bias")
+    ax.plot(degrees, variance, label="Variance")
+    ax.set_yscale("log")
+    ax.legend()
+    fig.savefig("../latex/figures/ex38.pdf")
