@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
 from sklearn.utils import resample
 
 from models import LinRegression, LinearReg
@@ -124,12 +125,60 @@ def exercise_36_2():
         r2_history.append(r2_val)
 
 
+def exercise_38_1():
+    n = 40
+    degree = 15
+    p_degrees = np.arange(degree)
+    n_boostraps = 100
+
+    x = np.linspace(-3, 3, n).reshape(-1, 1)
+    noise = np.random.normal(0, 0.1, x.shape)
+    y = np.exp(-x**2) + 1.5 * np.exp(-(x-2)**2) + noise 
+
+    error_train = np.empty(degree)
+    error_test = np.zeros(degree)
+    bias = np.zeros(degree)
+    variance = np.zeros(degree)
+
+
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+
+    for p in p_degrees:
+        model = make_pipeline(PolynomialFeatures(degree=p), LinearRegression(fit_intercept=False))
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test).ravel()
+        # y_pred = np.zeros((y_test.shape[0], n_boostraps))
+
+        # for i in range(n_boostraps):
+        #     x_, y_ = resample(X_train, y_train)
+        #     model.fit(x_, y_)
+        #     y_pred[:, i] = model.predict(X_test).ravel()
+
+        error_test[p] = np.mean( np.mean((y_test - y_pred)**2) )
+        bias[p] = np.mean( (y_test - np.mean(y_pred))**2 )
+        variance[p] = np.mean( np.var(y_pred) )
+
+        # mse_train[i] = mse(y_, y_tilde[:, i])
+        # mse_test[i] = mse(y_test, y_pred)
+
+        # error_train[p] = np.mean(mse_train)
+        # error_test[p] = np.mean( np.mean((y_test - y_pred)**2, axis=1, keepdims=True) )
+        # bias[p] = np.mean((y_test - np.mean(y_pred, axis=1, keepdims=True))**2)
+        # variance[p] = np.mean(np.var(y_pred, axis=1, keepdims=True))
+        # error_train[p] = np.mean(mse_train)
+
+
+    # return (error_train, error_test, bias, variance)
+    return (p_degrees, error_test, bias, variance)
+
+
 def exercise_38():
     n = 40
-    degree = 14
+    degree = 12
+    p_degrees = np.arange(degree)
     n_bootstraps = 100
 
-    x = np.random.rand(100) # .reshape(-1, 1)
+    x = np.random.rand(100).reshape(-1, 1)
     noise = np.random.normal(0, 0.1, x.shape)
     y = np.exp(-x**2) + 1.5 * np.exp(-(x-2)**2) + noise 
 
@@ -137,11 +186,12 @@ def exercise_38():
     error_test = np.empty(degree)
     bias = np.empty(degree)
     variance = np.empty(degree)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
-    for p in range(1, degree):
+    for p in range(degree):
 
-        X = design_matrix(x, p)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+        X = design_matrix(X_train, p)
+        
 
         y_tilde = np.empty((y_train.shape[0], n_bootstraps))
         y_pred = np.empty((y_test.shape[0], n_bootstraps))
@@ -170,21 +220,22 @@ def exercise_38():
         variance[p] = np.mean(np.var(y_pred, axis=1, keepdims=True))
 
     # return (error_train, error_test, bias, variance)
-    return (error_test, bias, variance)
+    return (p_degrees, error_test, bias, variance)
 
 
 if __name__ == '__main__':
     # exercise_35_2()
     np.random.seed(2024)
     # exercise_35_3()
-    error_test, bias, variance = exercise_38()
+    # p_degrees, error_test, bias, variance = exercise_38_1()
+    p_degrees, error_test, bias, variance = exercise_38_1()
 
-    degrees = np.arange(14)
     fig, ax = plt.subplots()
     # ax.plot(degrees, error_train, label=r"$\epsilon_{train}$")
-    ax.plot(degrees, error_test, label=r"$\epsilon_{test}$")
-    ax.plot(degrees, bias, label="Bias")
-    ax.plot(degrees, variance, label="Variance")
-    ax.set_yscale("log")
+    ax.plot(p_degrees, error_test, label=r"$\epsilon_{test}$")
+    ax.plot(p_degrees, bias, label="Bias")
+    ax.plot(p_degrees, variance, label="Variance")
+    # ax.set_yscale("log")
     ax.legend()
-    fig.savefig("../latex/figures/ex38.pdf")
+    # plt.show()
+    fig.savefig("../latex/figures/ex38_noise.pdf")
