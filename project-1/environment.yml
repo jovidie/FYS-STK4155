@@ -1,0 +1,16 @@
+# Create environment:
+#   conda env create --file environment.yml
+# Remove environment:
+#   conda remove --name pone-dev --all
+
+name: pone-dev
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python>=3.12
+  - pip
+
+  - pip:
+    - -r requirements.txt

@@ -7,7 +7,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from matplotlib import cm
 import numpy as np
 
-from utils import design_matrix, franke_function
+from pone.utils import design_matrix, franke_function
 
 class Regression(ABC):
     """Abstract class for regression models."""

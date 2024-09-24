@@ -3,7 +3,7 @@ requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "project1"
+name = "pone"
 version = "0.0.1"
 description = "FYS-STK4155 Project 1"
 readme = "README.md"
