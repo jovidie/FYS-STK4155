@@ -57,40 +57,55 @@
 \begin{document}
 
 %==========================================================
-%------------------ Exercise content ----------------------
+%------------------ Project content -----------------------
 %==========================================================
 
+%------------------ Abstract ------------------------------
+% \input{sections/abstract}
+
+%------------------ Content overview ----------------------
+% \frontmatter      % Folios in Roman numerals
+% \tableofcontents  
+
 %------------------ Title ---------------------------------
-\title{Exercises week 39}
+% \input{sections/titlepage}
+\title{Title}
 \author{Janita Ovidie Sandtrøen Willumsen \\ \faGithub \, \url{https://github.com/jovidie/FYS-STK4155}}        
 \date{\today}
 \noaffiliation
 
+% \input{sections/abstract}
 \maketitle
 
-%------------------ Body -----------------------------------
-% \mainmatter
-\onecolumngrid
-% \input{exercises/week35}
-% \input{exercises/week36}
-% \input{exercises/week37}
-% \input{exercises/week38}
-\input{exercises/week39}
-% \input{exercises/week40}
-% \input{exercises/week41}
-% \input{exercises/week42}
-% \input{exercises/week43}
-% \input{exercises/week44}
-% \input{exercises/week45}
+%------------------ Body ----------------------------------
+%\mainmatter
+\input{project-1/sections/notes}
+% \input{sections/introduction}
+% \input{sections/theory}
+% \input{sections/methods}
+% \input{sections/results}
+% \input{sections/discussion}
+% \input{sections/conclusion}
+% \input{sections/future_work}
+% \input{sections/report}
+% \input{sections/notes}
+% \input{sections/draft}
  
-%------------------ Bibliography ---------------------------
+%------------------ Bibliography --------------------------
 % \newpage 
-% \bibliographystyle{ksfh_nat}
-\bibliography{references}
+% \nocite{*}
+% \bibliography{references}
 
+%------------------ Appendix ------------------------------
+% \newpage
+% \onecolumngrid
+% \appendix
+% \input{sections/appendix}
+
+%------------------ Structure -----------------------------
+% \tableofcontents 
 
 %==========================================================
-%------------------ End of exercise content ---------------
+%------------------ End of project content ----------------
 %==========================================================
-
 \end{document}
