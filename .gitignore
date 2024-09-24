@@ -43,8 +43,8 @@ FYS-STK4155.code-workspace
 .ionide
 
 ### User ###
-graveyard/
-weekly/
+# graveyard/
+# weekly/
 
 ### Latex ###
 *.aux
