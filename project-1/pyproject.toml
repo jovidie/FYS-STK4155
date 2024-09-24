@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pone"
 version = "0.0.1"
-description = "FYS-STK4155 Project 1"
+description = "FYS-STK4155 Project 1 module"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ['numpy']
