@@ -3,12 +3,11 @@ requires = ["setuptools>=61.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fys-stk4155"
+name = "project1"
 version = "0.0.1"
-description = "FYS-STK4155 Coursework"
+description = "FYS-STK4155 Project 1"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { file = "LICENSE" }
 dependencies = ['numpy']
 
 [tool.black]
