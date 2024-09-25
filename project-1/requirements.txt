@@ -4,6 +4,7 @@ clu
 distrax
 flax
 h5py
+imageio
 ipython
 isort
 jax[cpu]
