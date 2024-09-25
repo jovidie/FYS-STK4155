@@ -36,7 +36,7 @@ def franke_function(x, y, noise_factor=0):
 
     if noise_factor != 0:
         noise = np.random.normal(0, 0.1, len(x)*len(y)) 
-        noise = noise_factor.reshape(len(x),len(y))
+        noise = noise.reshape(len(x),len(y))
 
     return term1 + term2 + term3 + term4 + noise_factor*noise
 
