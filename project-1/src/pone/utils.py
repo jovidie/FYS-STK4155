@@ -17,107 +17,84 @@ def set_plt_params():
     }
     plt.rcParams.update(params)
 
-def franke_function(x, y, noise_factor=0):
+def franke_function(x1, x2, noise_factor=0):
     """The Franke function is a bivariate test function.
 
     Args:
-        x (np.ndarray): x-values
-        y (np.ndarray): y-values
+        x1 (np.ndarray): x1-values
+        x2 (np.ndarray): x2-values
         noise_factor (int): adds noise to function, default is 0
 
     Returns:
         np.ndarray: array of function values
     """
-    noise = 0
-    term1 = 0.75*np.exp(-(0.25*(9*x-2)**2) - 0.25*((9*y-2)**2))
-    term2 = 0.75*np.exp(-((9*x+1)**2)/49.0 - 0.1*(9*y+1))
-    term3 = 0.5*np.exp(-(9*x-7)**2/4.0 - 0.25*((9*y-3)**2))
-    term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
+    m, n = len(x1), len(x2)
+    noise = np.random.normal(0, 1, n*m).reshape(m, n)
+    
+    term1 = 0.75*np.exp(-(0.25*(9*x1-2)**2) - 0.25*((9*x2-2)**2))
+    term2 = 0.75*np.exp(-((9*x1+1)**2)/49.0 - 0.1*(9*x2+1))
+    term3 = 0.5*np.exp(-(9*x1-7)**2/4.0 - 0.25*((9*x2-3)**2))
+    term4 = -0.2*np.exp(-(9*x1-4)**2 - (9*x2-7)**2)
 
-    if noise_factor != 0:
-        noise = np.random.normal(0, 0.1, len(x)*len(y)) 
-        noise = noise.reshape(len(x),len(y))
+    franke = term1 + term2 + term3 + term4
 
-    return term1 + term2 + term3 + term4 + noise_factor*noise
+    return franke + noise_factor*noise
 
 
-def design_matrix(x, degree):
+def design_matrix(x1, x2, p):
     """Create design matrix for polynomial degree n with dimension determined
     by the size of input arrays and degree.
 
     Args:
-        x (np.ndarray): x-values, 1D or 2D array
-        y (np.ndarray): y-values, 1D or 2D array
-        degree (int): order of polynomial degree
+        x1 (np.ndarray): x1-values, 1D or 2D array
+		x2 (np.ndarray): x2-values, 1D or 2D array
+        p (int): order of polynomial degree
         
     Returns:
-        np.ndarray: array with shape (len(x)*len(y), degree)
+        np.ndarray: array with polynomial features
     """
-    p = degree
+    if len(x1.shape) > 1:
+        x1 = np.ravel(x1)
+        x2 = np.ravel(x2)
 
-    if len(x) == 1:
-        x = x[0]
-        print(x.shape)
-        X = np.column_stack((np.ones_like(x), x))
-        for i in range(2, p+1):
-            X = np.column_stack((X, x**i))
-        return X
-    
-    elif len(x) == 2:
-        x, y = x[0], x[1]
-        if len(x[0].shape) > 1:
-            x = np.ravel(x)
-            y = np.ravel(y)
+    m = len(x1)
+	# Number of elements in beta
+    n = int((p+1)*(p+2)/2)
 
-        N = len(x)
-        l = int((p + 1) * (p + 2) / 2)
+    X = np.ones((m, n))
 
-        X = np.zeros((N, l))
-        X[:, 0] = np.ones(N)
+    for i in range(1, p+1):
+        q = int((i)*(i+1)/2)
+        for j in range(i + 1):
+            X[:, q+j] = (x1**(i-j))*(x2**j)
 
-        for i in range(1, p + 1):
-            q = int((i) * (i + 1) / 2)
-            for k in range(i + 1):
-                X[:, q + k] = (x**(i - k)) * (y**k)
-        return X
-
-    else:
-        raise ValueError(f"{len(x)} is not a valid input dimension, must be 1D or 2D.")
+    return X
 
 
 def mse(y_true, y_pred):
-    """Calculates the mean squared error.
-    
-    Args:
-        y_true (np.ndarray): True values
-        y_pred (np.ndarray): Predicted values
-    
-    Returns:
-        float: mse value
-    """
-    n = np.size(y_pred)
-    return np.sum((y_true - y_pred)**2) / n
+	"""Calculate the mean square error of the fit.
+	
+	Args:
+	    y_true (np.ndarray): data to fit
+		model (np.ndarray): predicted model
+		
+	Returns:
+	    np.ndarray: mean square error of fit
+	"""
+	return np.sum((y_true - y_pred)**2) / len(y_true)
+
 
 def r2(y_true, y_pred):
-    """Calculates the R2 score.
-    
+    """Calculate the R2 score of the fit
+
     Args:
-        y_true (np.ndarray): True values
-        y_pred (np.ndarray): Predicted values
-    
+        data (np.ndarray): original data to fit
+        model (np.ndarray): predicted model
+		
     Returns:
-        float: R2 score
+        np.ndarray: R2 score of fit
     """
     num = np.sum((y_true - y_pred)**2)
     denom = np.sum((y_true - np.mean(y_true))**2)
     return 1 - (num / denom)
 
-
-if __name__ == '__main__':
-    x = np.ones(10) * 2
-    y = np.ones(10) * 3
-    z = 2.0 + 5*x**2 + x*y + 0.1*np.random.randn(10)
-
-    X = design_matrix(x, y, 5)
-
-    print(X)
