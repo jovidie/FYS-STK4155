@@ -4,14 +4,15 @@
 
 import importlib.metadata
 
-from .models import LinearRegression, RidgeRegression, LassoRegression
+from .models import OLSRegression, RidgeRegression, LassoRegression
 from .utils import design_matrix, franke_function, set_plt_params, mse, r2
-from .resamplers import Bootstrapper
+from .resamplers import Resampler
+from .data_generation import create_function_data, create_terrain_data
 
 __version__ = importlib.metadata.version(__package__)
 
 __all__ = [
-    "LinearRegression",
+    "OLSRegression",
     "RidgeRegression",
     "LassoRegression",
     "design_matrix",
@@ -19,5 +20,7 @@ __all__ = [
     "set_plt_params",
     "mse",
     "r2",
-    "Bootstrapper"
+    "Resampler",
+    "create_function_data",
+    "create_terrain_data"
 ]
