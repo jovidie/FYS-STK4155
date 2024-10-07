@@ -54,6 +54,3 @@ python3 -m pip install -e .
 ├── README.md
 └── requirements.txt
 ```
-
-### Author 
-- [Janita Ovidie Sandtrøen Willumsen](janitaws@uio.no)
