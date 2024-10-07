@@ -4,6 +4,7 @@ import seaborn as sns
 
 
 def set_plt_params():
+    """Set parameters and use seaborn theme to plot."""
     sns.set_theme()
     params = {
         "font.family": "Serif",
@@ -16,6 +17,7 @@ def set_plt_params():
         "legend.fontsize": "medium"
     }
     plt.rcParams.update(params)
+    
 
 def franke_function(x1, x2, noise_factor=0):
     """The Franke function is a bivariate test function.
