@@ -15,7 +15,7 @@ To update an existing environment:
 conda env update --name pone-dev --file environment.yml --prune
 ```
 
-The dependencies can also be installed independent of `conda`, directly from `requirements.txt`:
+The dependencies can also be installed directly from `requirements.txt`:
 ```sh
 python3 -m pip install -r requirements.txt
 ```
