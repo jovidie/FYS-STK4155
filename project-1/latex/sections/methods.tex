@@ -59,12 +59,13 @@ I implemented the OLS method and fit the function data,
 
 %------------ Model evaluation --------------------------------
 \subsection{Model evaluation}\label{ssec:evaluation}
-To evaluate the performance of each model, I used both the mean squared error (MSE) and the R$^{2}$-score
+To evaluate the performance of each model, I used both the mean squared error (MSE) and the R$^{2}$-score, where the latter determines the proportion of variance in the dependent variable that can be explained by the independent variable.
+
 - Error analysis
 - Bias-variance trade off
 
 %------------ Tools -------------------------------------------
 \subsection{Tools}\label{ssec:tools}
-All code was implemented in \verb|Python|. In addition, I used utility functions from \verb|scikit-learn| for preprocessing data, evaluating models, and the Lasso regression method. To produce and stylize figures I used the \verb|matplotlib| and \verb|seaborn| libraries, respectively.
+All regression methods was implemented in \verb|Python|. However, I used the Lasso regression method from \verb|scikit-learn|, in addition to utility functions for pre-processing data, and evaluating the models. To produce and stylize plots, I used the \verb|matplotlib| and \verb|seaborn| libraries, respectively. In order to explore the function and terrain data during implementation, I used notebooks, as well as some unit tests in \verb|test.py|. 
 
-In order to explore the data and function during implementation, I used notebooks, as well as unit tests in \verb|test.py|.
+During the writing process I used ChatGPT to help translate from Norwegian to English, and to improve the grammar and vocabulary in the text.

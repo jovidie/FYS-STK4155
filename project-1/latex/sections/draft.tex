@@ -87,3 +87,74 @@ The R$^{2}$-score indicate the accuracy of the model prediction, where a score o
 \end{equation}
 
 as well study the bias-variance trade-off. 
+
+
+\section{Results}\label{sec:results}
+%------------ Part a ------------------------------------------
+Scaling... 
+I generated data from the franke function, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. The feature data was not scaled, as both input features were sampled from a uniform distribution $\in [0, 1]$, resulting in the function data being scaled to that domain. Before training the model, the input and target data was split into train and test set, where the test set contained $20\%$ of the original data.
+
+I computed the MSE and R$^{2}$-score for predictions on both data set, the result is shown in Figure \ref{fig:ols_error} and Figure \ref{fig:ols_error_noisy}, respectively.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_error.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data was generated without stochastic noise.}
+    \label{fig:ols_error}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_error_noisy.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data includes stochastic noise $\epsilon \in \mathcal{N}(0, 1)$.}
+    \label{fig:ols_error_noisy}
+\end{figure}
+
+When noise is included in the function data, the error increases for all polynomial degrees. Since the R$^{2}$-score determines how large a proportion of the variance in the dependent variable is explained by the independent variable, it seems the model only explains the input features.
+
+Looking at $\beta$-values for the model fitting the function data without noise in Figure \ref{fig:ols_beta}, and the function data with noise Figure \ref{fig:ols_beta_noisy}. As the polynomial degree increase, the absolute values of $\beta$ increase. However, both the absolute values and variance between each $\beta_{i}$ increase when noise is included in the function.  
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_beta.pdf}
+    \caption{The figure shows beta values for different polynomial degree.}
+    \label{fig:ols_beta}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_beta_noisy.pdf}
+    \caption{The figure shows beta values for different polynomial degree, when the function includes noise.}
+    \label{fig:ols_beta_noisy}
+\end{figure}
+
+I continued the regression analysis with data from the Franke function which included noise.
+
+%------------ Part b ------------------------------------------
+To determine a range for the optimal values of $\lambda$, I trained and tested the Ridge model on $100$ values, where Log$_{10}(\lambda) \in [-10, 10]$. The result can be found in Figure \ref{fig:test_lmbda_range}, in Appendix \ref{ap:additional_analysis}
+
+
+
+%------------ Part c ------------------------------------------
+
+
+
+
+%------------ Part d ------------------------------------------
+
+
+
+
+%------------ Part e ------------------------------------------
+
+
+
+
+%------------ Part f ------------------------------------------
+
+
+
+
+%------------ Part g ------------------------------------------
+
+
+
