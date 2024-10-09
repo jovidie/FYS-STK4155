@@ -8,7 +8,20 @@
 %================================================================
 Method? Data from a grid of $100 \times 100$ data points. For each polynomial degree up to 5, I created the corresponding design matrix, and split the input and target data into train and test set.
 
-I first generated data from the franke function, without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. I computed the MSE and R$^{2}$-score, the result is shown in Figure 
+I generated data from the franke function, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. I computed the MSE and R$^{2}$-score for predictions on both data set, the result is shown in Figure \ref{fig:ols_error} and Figure \ref{fig:ols_error_noisy}, respectively.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data was generated without stochastic noise.}
+    \label{fig:ols_error}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error_noisy.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data includes stochastic noise $\epsilon \in \mathcal{N}(0, 1)$.}
+    \label{fig:ols_error_noisy}
+\end{figure}
 
 Calculate MSE and R2 for each prediction, using the test data.
 
