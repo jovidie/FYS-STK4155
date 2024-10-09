@@ -1,0 +1,73 @@
+%================================================================
+\appendix
+% Additional calculations used to validate the codes, these 
+% selected calculations can be listed with few comments. Can also 
+% include listing of the code if you feel this is necessary
+%================================================================
+\section{Terrain data}\label{ap:terrain_data}
+Information on terrain data, downlowdad from EarthExplorer.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Country & ID & Coordinates \\
+        \hline
+        China & SRTM1N36E110V3 & $(36, 110)$ \\
+        Egypt & SRTM1N26E029V3 & $(26, 29)$ \\
+        Japan & SRTM1N34E135V3 & $(34, 135)$ \\
+        Nepal & SRTM1N27E085V3 & $(27, 85)$ \\
+        Norway & SRTM1N59E010V3 & $(59, 10)$ \\
+        \hline
+    \end{tabular}
+    \caption{Terrain data from different countries. The coordinates are with respect to the south west corner of the grid, given in latitude, longitude.}
+    \label{tab:terrain_data}
+\end{table}
+
+
+\section{Cost functions}\label{ap:cost_functions}
+- OLS
+- Ridge
+- Lasso
+
+
+\section{Bias-Variance Trade-Off}\label{ap:bias_var_eq}
+The parameters $\mathbf{\beta}$ can be found by optimizing the cost function
+\begin{equation*}
+    C(\mathbf{X}, \mathbf{\beta}) = \frac{1}{n} \sum_{i=0}^{n-1} ( y_{i} - \Tilde{y}_{i} )^{2} = \mathbb{E} \big[ ( \mathbf{y} - \mathbf{\Tilde{y}} )^{2} \big] .
+\end{equation*}
+
+Assuming linearity, the expression can be written as 
+\begin{equation*}
+    \mathbb{E} \big[ ( \mathbf{y} - \mathbf{\Tilde{y}} )^{2} \big] = \mathbb{E} [ \mathbf{y}^{2} ] - 2 \mathbb{E} [ \mathbf{y} \mathbf{\Tilde{y}} ] + \mathbb{E} [ \mathbf{\Tilde{y}}^{2} ].
+\end{equation*}
+
+Looking at the first term
+\begin{align*}
+    \mathbb{E} [ \mathbf{y}^{2} ] &= \mathbb{E} [ ( f(\mathbf{x}) + \mathbf{\epsilon} )^{2} ] \\
+    &= \mathbb{E} [ f(\mathbf{x})^{2} ] - 2 \mathbb{E} [ f(\mathbf{x}) \mathbf{\epsilon} ] + \mathbb{E} [ \mathbf{\epsilon}^{2} ] & \text{where $f(\mathbf{x})$ and $\epsilon$ are independent of $\mathbf{y}$, and each other} \\
+    &= f(\mathbf{x})^{2} + \sigma^{2} .
+\end{align*}
+
+The second term can be written as 
+\begin{align*}
+    \mathbb{E} [ \mathbf{y} \mathbf{\Tilde{y}} ] &= \mathbb{E} [ f(\mathbf{x} + \mathbf{\epsilon}) \mathbf{\Tilde{y}} ] \\
+    &= \mathbb{E} [ f(\mathbf{x}) \mathbf{\Tilde{y}} ] + \mathbb{E} [ \epsilon \mathbf{\Tilde{y}} ] \\
+    &=  f(\mathbf{x}) \mathbb{E} [ \mathbf{\Tilde{y}} ] & \text{since $\mathbb{E}[\mathbf{\epsilon}] = 0$} .
+\end{align*}
+
+The last term is the 2. moment, which can be written as 
+\begin{align*}
+    \mathbb{E} [ \mathbf{\Tilde{y}}^{2} ] &= \mathbb{V}[\mathbf{\Tilde{y}}] + (\mathbb{E} [ \mathbf{\Tilde{y}} ])^{2} 
+\end{align*}
+
+Combining all the terms, and rearranging gives us
+\begin{align*}
+    \mathbb{E} [ \mathbf{y}^{2} ] - 2 \mathbb{E} [ \mathbf{y} \mathbf{\Tilde{y}} ] + \mathbb{E} [ \mathbf{\Tilde{y}}^{2} ] &= f(\mathbf{x})^{2} + \sigma^{2} - 2 f(\mathbf{x}) \mathbb{E} [ \mathbf{\Tilde{y}} ] + \mathbb{V}[\mathbf{\Tilde{y}}] + (\mathbb{E} [ \mathbf{\Tilde{y}} ])^{2} 
+    &= \mathbb{E} [ (\mathbf{y} - \mathbf{\Tilde{y}})^{2} ] + \mathbb{V}[\mathbf{\Tilde{y}}] + \sigma^{2} , 
+\end{align*}
+where 
+\begin{align*}
+    \mathbb{E} [ (\mathbf{y} - \mathbf{\Tilde{y}})^{2} ] = \text{Bias}[\mathbf{\Tilde{y}}]. 
+\end{align*}
+
+The bias-variance trade-off is a way to evaluate the how well the model is able to fit the test data. As seen in Figure \ref{fig:bias-variance}, when the polynomial degree is low, there is not much variance between the training data and the test data. However, the bias might be higher as it fails to predict the right complexity of the data. As the polynomial degree of the input increases, the variance increases. The bias decreases until the sufficient model complexity is reached. This is where the model is able to fit the training data, without overfitting, and also make good predictions on test data. 
