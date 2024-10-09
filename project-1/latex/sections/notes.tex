@@ -1,24 +1,54 @@
 Scaling: the franke function uses samples from 0 to 1, careful with scaling as the $x^{p-1}$ would end up close to zero. 
 
-Todo
-\begin{itemize}
-    \item[Part a] 
-    \begin{itemize}
-        \item[$\square$] Generate dataset from Franke function, both with and without noise
-        \item[$\square$] OLS regression analysis up to fifth order polynomials.
-        \item[$\square$] Evaluate and plot the MSE and R2 score.
-        \item[$\square$]
-    \end{itemize}
+franke: two gaussian peaks, and valleys, which makes it useful as a test function in interpolation problems.
 
-    \item[Part b]
+Regression methods
+The overarching goal of regression methods is to find a functional relationship between the input and the target, or label, data. It is possible to predict a value of a continuous target variable, such as fitting a polynomial curve. This result in a linear parameterization, which in turn gives a analytical expression of the parameter. 
 
-    \item[Part c]
+One advantages of linear regression is that it allows for analysis of statistical properties of the functional relationship, when using resampling techniques. 
 
-    \item[Part d]
+The functional relatioship can be expressed as y = f(x), and we want to approximate a function y- 
 
-    \item[Part e]
+The input features are represented in a design matrix $\mathbf{X}$, and the target in a vector $\mathbf{y}$. The functional relationship between input and target is expressed as
+\begin{equation}
+    \mathbf{y} = \mathbf{X} \mathbf{\beta} + \mathbf{\epsilon},
+\end{equation}
+where $\mathbf{\beta}$ is the regression parameter and $\mathbf{\epsilon}$ is the errorß.
 
-    \item[Part f]
+To evaluate the fit of the model, it is common to use mean squared error (MSE) and R2-score.
 
-    \item[Part g]
-\end{itemize}
+%------------------------- Abstract -----------------------------
+% You summarize your work short and sweet, and reveal very sensible findings. Good! For an abstract, it is customary to include some stage setting at the beginning. The first sentence should reveal what field we are in. The next few might narrow in on which specific subfield we are in. Then, you explain your motivation, or present the "gap" in knowledge that your research will fill.
+
+
+% Of course, it's not easy to make a motivation for this project, because it is just a project! But I encourage you to attempt to create a motivation that corresponds to the results you want to highlight here. For example, maybe you see a need to explore when to use OLS versus Ridge, because OLS performs better than Ridge unless there's overfitting. It's up to you :) 
+
+
+% The abstract can then conclude with the broader impact of your findings. What does it mean for the scientific community? Or the general public?
+
+% 1. the context or background information for your research; the general topic under study; the specific topic of your research
+% 2. the central questions or statement of the problem your research addresses
+% what’s already known about this question, what previous research has done or shown
+% 3. the main reason(s), the exigency, the rationale, the goals for your research—Why is it important to address these questions? Are you, for example, examining a new topic? Why is that topic worth examining? Are you filling a gap in previous research? Applying new methods to take a fresh look at existing ideas or data? Resolving a dispute within the literature in your field? . . .
+% 4. your research and/or analytical methods
+% 5. your main findings, results, or arguments
+% 6. the significance or implications of your findings or arguments.
+
+%------------------------- Introduction -------------------------
+% The stage-setting is great, good use of a reference! It would be great to have the set-up lead into what your motivation is for this project, as discussed above. Then, you can follow with your good summary of what was done, but include the why it was done as well. Finally, you can conclude briefly with your results, just like in the intro. Very good that you outline the sections! 
+Model precipitation during storm based on variables such as min max temperature, wind speed pressure. Knowing some dependent variables you can use regression methods to model a dependent variable, which can give you a model to feed in stuff like klimate variables to predict any change in terrain height. Could be relevant in detecting changes in terrain in areas vulnerable for landslides or tsunamis. In combination with other methods, it can be used to increase the resolution of mapping 
+
+%------------------------- Theory -------------------------------
+Linear regression is a easy method to fit a line to a set of data points, and the goal is to reduce the total error of the fit. The measure of error to avoid negative sums and calculating absolute sums, we use the sum of squared residuals to evaluate the fit of the line. To find the optimal fit of the line, we calculate the derivative of least squared error and find where it is equal to zero.
+
+Regularization techniques, such as Ridge and Lasso regression, is a way to counteract overfitting. It introduces some bias to reduce the variance, by adding a penalty to the slope where lambda determines how much penalty, or bias, is added. Lambda equal zero gives us OLS. The effect of adding this penalty, when increasing lambda the prediction becomes less sensitive to the input. ridge regression can be used to fit data when you don't have enough data points to fit the number of features. Inversion of matrices with null-values, singular design matrices. To find beta we need to find the inverse of XTX, which is not always possible.
+
+Ridge regression tend to do better when most features contribute to the output, whereas Lasso might be a better fit when some variables are redundant. exclude them
+
+Use cross-validation to determine the optimal lambda
+
+Design matrices are set up to represent the polynomial degree of the input x1 and x2. The intercept tells whether the line crosses the x axis/ plane.
+
+R2 tells something about how good the prediction is, where 1 is a perfect prediction. In the case of fitting a polynomial curve, it tells us how much of the function size/value is explained when we take the polynomial degree into account.
+
+%------------------------- Methods ------------------------------

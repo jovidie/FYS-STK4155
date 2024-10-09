@@ -1,37 +1,70 @@
-%================================================================
+%==============================================================
 \section{Methods}\label{sec:methods}
 % Describe the methods and algorithms used, include any formulas. 
-% Explain how everything is implemented, and possibly mention the 
-% structure of the algorithm. Add demonstrations such as tests, 
-%  selected runs and validations. 
-%================================================================
-
+% Explain how everything is implemented, and possibly mention the structure of the algorithm. Add demonstrations such as tests, selected runs and validations. 
+%==============================================================
+%------------ Theory ------------------------------------------
+In this project I have studied regression methods to predict terrain, when the model was trained on synthetic data.  
+- Linear regression
+%------------ Data --------------------------------------------
 \subsection{Data}\label{ssec:data}
-To train the model we need data which resemble our problem. The Franke function \eqref{eq:franke_function} is used as a test function in problems dealing with interpolation, and will be used to generate dataset. 
-
+To implement the regression methods, I used synthetic data generated from the two-dimensional Franke function \eqref{eq:franke_function}, commonly used as a test function in polynomial fitting. The function was used to generate data, which was used to train and test the models. 
 \begin{equation}\label{eq:franke_function}
 \begin{split}
     f(x, y) &= \frac{3}{4} \exp(- \frac{(9x-2)^{2}}{4} - \frac{(9y-2)^{2}}{4} ) \\
     &+ \frac{3}{4} \exp(- \frac{(9x-2)^{2}}{4} - \frac{(9y-2)^{2}}{4} ) \\
     &+ \frac{3}{4} \exp(- \frac{(9x+1)^{2}}{49} - \frac{(9y+1)}{10} ) \\ 
     &- \frac{1}{5} \exp(- (9x-4)^{2} - (9y-7)^{2} ) 
-\end{split}
+\end{split}, 
 \end{equation}
-- Topographic data
-- Preprocessing
+where $x, y \in [0, 1]$. I generated data points from a uniform distribution, to ensure a good representation of the domain. The data was not scaled as the input to the function was scaled, resulting in the output being scaled to that domain.
 
+In addition to synthetic data, I tested the models on real terrain data. The real data was generated using the EarthExplorer \cite{usgov:2024:earthexplorer}, with selected World Features. To study the performance of the models on various terrain, I generated data set which included different features. Information on the terrain data can be found in Table \ref{tab:terrain_data}, in Appendix \ref{ap:terrain_data}.
 
-\subsection{Regression models}\label{ssec:regression_models}
-- OLS
+The terrain data was not preprocessed, which required it to be scaled. I started with standard scaling, and also tested min-max scaling. However, these did not work for only scaling the terrain data values, I standardized the terrain data by subtracting the mean value, and dividing by the standard deviation.
+
+Both the function data and the terrain data was split up in train and test set.
+
+%------------ Regression methods ------------------------------
+\subsection{Regression methods}\label{ssec:regression_methods}
+For problems of a continuous nature, linear regression methods are commonly used, as they provide analytical expressions which can provide statistical insight. 
+
+The general aim of regression methods are to find a function which describes the data. That is, given a set of data $\mathbf{y}$, the aim is to find a continuous function $f$ which model the data as
+\begin{equation*}
+    \mathbf{y} = f( \mathbf{x} ) + \mathbf{\epsilon}, 
+\end{equation*}
+where $\mathbf{\epsilon} \in \mathcal{N}(0, \sigma^{2})$. In this project I will apply linear regression to find an approximation of the data 
+\begin{equation*}
+    \mathbf{\Tilde{y}} = \mathbf{X} \mathbf{\beta},
+\end{equation*}
+where $\mathbf{\beta}$ are the optimal parameters. More specifically, I want to find the relationship between the input features and the target, by determining the coefficients. 
+
+To measure the quality of the model, I define a loss function 
+\begin{equation*}
+    C (\mathbf{\beta}) = \frac{1}{n} \big( (\mathbf{y} - \mathbf{X} \mathbf{\beta})^{T} (\mathbf{y} - \mathbf{X} \mathbf{\beta}) \big)
+\end{equation*}
+
+- approximation by beta
+- cost function
+I set up design matrices to a range of polynomial degrees, and fit the OLS model using function data. 
+I implemented the OLS method and fit the function data, 
+
 - Ridge
 - Lasso
 
+%------------ Resampling methods -------------------------------------------
 \subsection{Resampling techniques}\label{ssec:resampling_techniques}
 - Bootstrap
 - Cross-validation
 
+%------------ Model evaluation --------------------------------
 \subsection{Model evaluation}\label{ssec:evaluation}
+To evaluate the performance of each model, I used both the mean squared error (MSE) and the R$^{2}$-score
+- Error analysis
 - Bias-variance trade off
 
-
+%------------ Tools -------------------------------------------
 \subsection{Tools}\label{ssec:tools}
+All code was implemented in \verb|Python|. In addition, I used utility functions from \verb|scikit-learn| for preprocessing data, evaluating models, and the Lasso regression method. To produce and stylize figures I used the \verb|matplotlib| and \verb|seaborn| libraries, respectively.
+
+In order to explore the data and function during implementation, I used notebooks, as well as unit tests in \verb|test.py|.

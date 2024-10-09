@@ -6,3 +6,12 @@
 % in figure captions such that they can give the reader enough to 
 % understand the main gist of the report.
 %================================================================
+Method? Data from a grid of $100 \times 100$ data points. For each polynomial degree up to 5, I created the corresponding design matrix, and split the input and target data into train and test set.
+
+I first generated data from the franke function, without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. I computed the MSE and R$^{2}$-score, the result is shown in Figure 
+
+Calculate MSE and R2 for each prediction, using the test data.
+
+The MSE and R2-score for the franke function without noise is shown in Figure (), and including noise in Figure (). The error decreases as the polynomial degree increases, this is more apparent when comparing the prediction of the noiseless function. When the maximum polynomial degree is set to 15, the test error reach a minima around degree (). While the training error continue to decrease, the test error increase for higher polynomial order, often seen when the model is overfitting to the training data.
+
+For ridge
