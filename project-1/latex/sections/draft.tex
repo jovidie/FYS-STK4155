@@ -130,8 +130,14 @@ Looking at $\beta$-values for the model fitting the function data without noise 
 I continued the regression analysis with data from the Franke function which included noise.
 
 %------------ Part b ------------------------------------------
-To determine a range for the optimal values of $\lambda$, I trained and tested the Ridge model on $100$ values, where Log$_{10}(\lambda) \in [-10, 10]$. The result can be found in Figure \ref{fig:test_lmbda_range}, in Appendix \ref{ap:additional_analysis}
+To determine a range for the optimal values of $\lambda$, I trained and tested the Ridge model on $100$ values, where Log$_{10}(\lambda) \in [-10, 10]$. The result can be found in Figure \ref{fig:test_lmbda_range}, in Appendix \ref{ap:additional_analysis}. However, it indicated that negative values of were likely to be better for further analysis. I continued with $100$ values, where Log$_{10}(\lambda) \in [-15, 5]$, the result is found in Figure \ref{fig:lmbda_opt}.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/lmbda_opt.pdf}
+    \caption{The figure shows MSE as a function of $\lambda$ and polynomial degree $P$, where the optimal value for $\lambda$ and $P$ is marked by an X.}
+    \label{fig:lmbda_opt}
+\end{figure}
 
 
 %------------ Part c ------------------------------------------
