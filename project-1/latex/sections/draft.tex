@@ -57,8 +57,31 @@ To find the optimal values $\mathbf{\beta}$, I solve the derivative of the loss 
 given that the matrix $\mathbf{X}^{T}\mathbf{X}$ is invertible.
 
 
+For problems of a continuous nature, linear regression methods are commonly used, as they provide analytical expressions which can provide statistical insight. 
+
+The general aim of regression methods are to find a function which describes the data. That is, given a set of data $\mathbf{y}$, the aim is to find a continuous function $f$ which model the data as
+\begin{equation*}
+    \mathbf{y} = f( \mathbf{x} ) + \mathbf{\epsilon}, 
+\end{equation*}
+where $\mathbf{\epsilon} \in \mathcal{N}(0, \sigma^{2})$. In this project I will apply linear regression to find an approximation of the data 
+\begin{equation*}
+    \mathbf{\Tilde{y}} = \mathbf{X} \mathbf{\beta},
+\end{equation*}
+where $\mathbf{\beta}$ are the optimal parameters. More specifically, I want to find the relationship between the input features and the target, by determining the coefficients. 
+
+To measure the quality of the model, I define a loss function 
+\begin{equation*}
+    C (\mathbf{\beta}) = \frac{1}{n} \big( (\mathbf{y} - \mathbf{X} \mathbf{\beta})^{T} (\mathbf{y} - \mathbf{X} \mathbf{\beta}) \big)
+\end{equation*}
+
+- approximation by beta
+- cost function
+I set up design matrices to a range of polynomial degrees, and fit the OLS model using function data. 
+I implemented the OLS method and fit the function data, 
+
+
 %------------ Regularization ------------------------------
-Ridge and Lasso regression include a regularixation term, which can fix the issue when the features are linearly dependent. The term is controlled by a hyperparameter $\lambda$, and penalise the loss function. For Ridge regression the optimal parameters are
+Ridge and Lasso regression include a regularization term, which can fix the issue when the features are linearly dependent. The term is controlled by a hyperparameter $\lambda$, and penalise the loss function. For Ridge regression the optimal parameters are
 \begin{equation}\label{eq:ridge_beta}
     \mathbf{\beta} = (\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y},
 \end{equation}
@@ -88,11 +111,36 @@ The R$^{2}$-score indicate the accuracy of the model prediction, where a score o
 
 as well study the bias-variance trade-off. 
 
+To evaluate the performance of each model, I used both the mean squared error (MSE) and the R$^{2}$-score, where the latter determines the proportion of variance in the dependent variable that can be explained by the independent variable.
+
+
 
 \section{Results}\label{sec:results}
+Method? Data from a grid of $100 \times 100$ data points. For each polynomial degree up to 5, I created the corresponding design matrix, and split the input and target data into train and test set.
+
+I generated data from the franke function, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. I computed the MSE and R$^{2}$-score for predictions on both data set, the result is shown in Figure \ref{fig:ols_error} and Figure \ref{fig:ols_error_noisy}, respectively.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data was generated without stochastic noise.}
+    \label{fig:ols_error}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error_noisy.pdf}
+    \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data includes stochastic noise $\epsilon \in \mathcal{N}(0, 1)$.}
+    \label{fig:ols_error_noisy}
+\end{figure}
+
+Calculate MSE and R2 for each prediction, using the test data.
+
+The MSE and R2-score for the franke function without noise is shown in Figure (), and including noise in Figure (). The error decreases as the polynomial degree increases, this is more apparent when comparing the prediction of the noiseless function. When the maximum polynomial degree is set to 15, the test error reach a minima around degree (). While the training error continue to decrease, the test error increase for higher polynomial order, often seen when the model is overfitting to the training data.
+
+
 %------------ Part a ------------------------------------------
 Scaling... 
-I generated data from the franke function, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. The feature data was not scaled, as both input features were sampled from a uniform distribution $\in [0, 1]$, resulting in the function data being scaled to that domain. Before training the model, the input and target data was split into train and test set, where the test set contained $20\%$ of the original data.
+I synthetic data, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. The feature data was not scaled, as both input features were sampled from a uniform distribution $\in [0, 1]$, resulting in the function data being scaled to that domain. Before training the model, the input and target data was split into train and test set, where the test set contained $20\%$ of the original data.
 
 I computed the MSE and R$^{2}$-score for predictions on both data set, the result is shown in Figure \ref{fig:ols_error} and Figure \ref{fig:ols_error_noisy}, respectively.
 
@@ -130,14 +178,9 @@ Looking at $\beta$-values for the model fitting the function data without noise 
 I continued the regression analysis with data from the Franke function which included noise.
 
 %------------ Part b ------------------------------------------
-To determine a range for the optimal values of $\lambda$, I trained and tested the Ridge model on $100$ values, where Log$_{10}(\lambda) \in [-10, 10]$. The result can be found in Figure \ref{fig:test_lmbda_range}, in Appendix \ref{ap:additional_analysis}. However, it indicated that negative values of were likely to be better for further analysis. I continued with $100$ values, where Log$_{10}(\lambda) \in [-15, 5]$, the result is found in Figure \ref{fig:lmbda_opt}.
+To determine a range for the optimal values of $\lambda$, I trained and tested the Ridge model on $100$ values, where Log$_{10}(\lambda) \in [-15, 5]$. The result can be found in Figure \ref{fig:lmbda_opt}, in Appendix \ref{ap:additional_analysis}. It indicated that negative values were likely better for further analysis. I continued with $8$ values, where Log$_{10}(\lambda) \in [-3, -1]$.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/lmbda_opt.pdf}
-    \caption{The figure shows MSE as a function of $\lambda$ and polynomial degree $P$, where the optimal value for $\lambda$ and $P$ is marked by an X.}
-    \label{fig:lmbda_opt}
-\end{figure}
+scaling!
 
 
 %------------ Part c ------------------------------------------
