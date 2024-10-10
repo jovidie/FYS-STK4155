@@ -6,25 +6,41 @@
 % in figure captions such that they can give the reader enough to 
 % understand the main gist of the report.
 %================================================================
-Method? Data from a grid of $100 \times 100$ data points. For each polynomial degree up to 5, I created the corresponding design matrix, and split the input and target data into train and test set.
+\subsection{Synthetic data analysis}\label{ssec:synthetic_data}
+I generated two synthetic data set, one of which included stochastic noise, from the Franke function in Equation \eqref{eq:franke_function}. To keep the initial analysis efficient and interpretable, I used $50 \times 50$ data points and noise $\epsilon \sim \mathcal{N}(0, 0.1)$ with less variance than suggested in the project description. 
 
-I generated data from the franke function, both with and without stochastic noise, and performed an OLS regression analysis up to polynomial of degree 5. I computed the MSE and R$^{2}$-score for predictions on both data set, the result is shown in Figure \ref{fig:ols_error} and Figure \ref{fig:ols_error_noisy}, respectively.
+\subsubsection{Ordinary Least Squares}\label{sssec:ols}
+I performed an OLS regression analysis up to a fifth polynomial degree, and computed the MSE and R$^{2}$-score for performance on both data set. The model's coefficients are shown in Figure \ref{fig:ols_beta_smooth} and Figure \ref{fig:ols_beta}. The MSE and R$^{2}$-score is shown in Figure \ref{fig:ols_error_smooth} and Figure \ref{fig:ols_error}.
+
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error.pdf}
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_error.pdf}
     \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data was generated without stochastic noise.}
     \label{fig:ols_error}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\linewidth]{project-1/latex/figures/ols_error_noisy.pdf}
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_error_noisy.pdf}
     \caption{MSE and R$^{2}$-score computed on test data, as a function of the polynomial degree of the input features. The function data includes stochastic noise $\epsilon \in \mathcal{N}(0, 1)$.}
     \label{fig:ols_error_noisy}
 \end{figure}
 
-Calculate MSE and R2 for each prediction, using the test data.
+When noise is included in the function data, the error increases for all polynomial degrees. Since the R$^{2}$-score determines how large a proportion of the variance in the dependent variable is explained by the independent variable, it seems the model only explains the input features.
 
-The MSE and R2-score for the franke function without noise is shown in Figure (), and including noise in Figure (). The error decreases as the polynomial degree increases, this is more apparent when comparing the prediction of the noiseless function. When the maximum polynomial degree is set to 15, the test error reach a minima around degree (). While the training error continue to decrease, the test error increase for higher polynomial order, often seen when the model is overfitting to the training data.
+Looking at $\beta$-values for the model fitting the function data without noise in Figure \ref{fig:ols_beta}, and the function data with noise Figure \ref{fig:ols_beta_noisy}. As the polynomial degree increase, the absolute values of $\beta$ increase. However, both the absolute values and variance between each $\beta_{i}$ increase when noise is included in the function.  
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_beta.pdf}
+    \caption{The figure shows beta values for different polynomial degree.}
+    \label{fig:ols_beta}
+\end{figure}
 
-For ridge
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{project-1/latex/figures/ols_beta_noisy.pdf}
+    \caption{The figure shows beta values for different polynomial degree, when the function includes noise.}
+    \label{fig:ols_beta_noisy}
+\end{figure}
+
+I continued the regression analysis with data from the Franke function which included noise.
