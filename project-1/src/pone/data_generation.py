@@ -9,11 +9,12 @@ def create_terrain_data(filename, N, scaled=False):
 	Args:
         filename (str): filename to import data from
 		N (int): number of rows and columns to use from terrain
+		scaled (bool): returns the data scaled, default is False
 		
 	Returns:
-        tuple: arrays of raveled input and output data
+        tuple: arrays of input and terrain data
 	"""
-	data = f'../data/{filename}'
+	data = f"data/{filename}"
 	terrain = imread(data)
 
 	# Create y of given data points
@@ -30,29 +31,38 @@ def create_terrain_data(filename, N, scaled=False):
 	if scaled:
 		y = y.ravel()
 		y_scaled = (y - y.mean()) / y.std()
-		return (x1.ravel(), x2.ravel(), y_scaled)
+		return (x1, x2, y_scaled.reshape(-1, N))
 	
 	else:
-		return (x1.ravel(), x2.ravel(), y.ravel())
+		return (x1, x2, y)
 
 
 
-def create_function_data(N, noise_factor=0):
+def create_function_data(N, noise_var=0, scaled=False):
 	"""Create input and output data using the Franke function
 	
 	Args:
         N (int): number of data points
-	    noise_factor (int): add noise to function, default is 0
+	    noise_factor (float): add noise to function, default is 0
+		scaled (bool): returns the data scaled, default is False
 		
 	Returns:
-	    tuple: arrays of raveled input and output data
+	    tuple: arrays of input and function data
 	"""
 	# Create x and y
 	x1_ = np.sort(np.random.uniform(0, 1, N))
 	x2_ = np.sort(np.random.uniform(0, 1, N))
 	x1, x2= np.meshgrid(x1_, x2_)
 	
-	x1, x2 = x1.ravel(), x2.ravel()
-	y = franke_function(x1, x2, noise_factor)
+	# x1, x2 = x1.ravel(), x2.ravel()
+	y = franke_function(x1, x2, noise_var)
+
+	if scaled:
+		y = y.ravel()
+		y_scaled = (y - y.mean()) / y.std()
+		return (x1, x2, y_scaled.reshape(-1, N))
 	
-	return (x1, x2, y.ravel())
+	else:
+		return (x1, x2, y)
+	
+
