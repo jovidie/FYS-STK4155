@@ -21,7 +21,6 @@ __all__ = [
     "set_plt_params",
     "mse",
     "r2",
-    "Resampler",
     "create_function_data",
     "create_terrain_data",
     "Trainer", 
