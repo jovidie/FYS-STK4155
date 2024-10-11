@@ -31,9 +31,13 @@ python3 -m pip install -e .
 ## Project 1 structure
 ```sh
 .
+├── data
+├── examples
+│   ├── main.py 
+│   └── test.py
 ├── latex
-│   ├── figures/
-│   ├── sections/
+│   ├── figures
+│   ├── sections
 │   ├── main.tex
 │   ├── main.pdf
 │   └── references.bib
@@ -47,8 +51,6 @@ python3 -m pip install -e .
 │       ├── models.py
 │       ├── resamplers.py
 │       └── utils.py
-├── tests
-│   └── test.py
 ├── environment.yml  
 ├── pyproject.toml
 ├── README.md
