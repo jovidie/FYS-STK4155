@@ -14,24 +14,25 @@ def set_plt_params():
         "axes.labelsize": "large",
         "xtick.labelsize": "large",
         "ytick.labelsize": "large",
-        "legend.fontsize": "medium"
+        "legend.fontsize": "medium", 
+        "savefig.dpi": 300
     }
     plt.rcParams.update(params)
     
 
-def franke_function(x1, x2, noise_factor=0):
+def franke_function(x1, x2, noise_var=0):
     """The Franke function is a bivariate test function.
 
     Args:
         x1 (np.ndarray): x1-values
         x2 (np.ndarray): x2-values
-        noise_factor (int): adds noise to function, default is 0
+        noise_var (float): add noise with variation [0, 1]
 
     Returns:
         np.ndarray: array of function values
     """
     m, n = len(x1), len(x2)
-    noise = np.random.normal(0, 1, n*m).reshape(m, n)
+    noise = np.random.normal(0, noise_var, n*m).reshape(m, n)
     
     term1 = 0.75*np.exp(-(0.25*(9*x1-2)**2) - 0.25*((9*x2-2)**2))
     term2 = 0.75*np.exp(-((9*x1+1)**2)/49.0 - 0.1*(9*x2+1))
@@ -40,7 +41,10 @@ def franke_function(x1, x2, noise_factor=0):
 
     franke = term1 + term2 + term3 + term4
 
-    return franke + noise_factor*noise
+    if noise_var != 0:
+        return franke + noise
+    
+    return franke
 
 
 def design_matrix(x1, x2, p):
