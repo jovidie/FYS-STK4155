@@ -8,6 +8,8 @@ from .models import OLSRegression, RidgeRegression, LassoRegression
 from .utils import design_matrix, franke_function, set_plt_params, mse, r2
 from .resamplers import Resampler
 from .data_generation import create_function_data, create_terrain_data
+from .trainer import Trainer
+from .plot import plot_surf, plot_terrain, plot_heatmap
 
 __version__ = importlib.metadata.version(__package__)
 
@@ -22,5 +24,9 @@ __all__ = [
     "r2",
     "Resampler",
     "create_function_data",
-    "create_terrain_data"
+    "create_terrain_data",
+    "Trainer", 
+    "plot_surf", 
+    "plot_terrain",
+    "plot_heatmap"
 ]
