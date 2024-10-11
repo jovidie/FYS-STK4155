@@ -45,7 +45,7 @@ class RidgeRegression:
 class LassoRegression:
     """Regression model with Lasso regularization, wraps sklearn model."""
     def __init__(self, lmbda, iter=10_000) -> None:
-        self._model = Lasso(fit_intercept=False, max_iter=iter, alpha=lmbda)
+        self._model = Lasso(fit_intercept=True, max_iter=iter, alpha=lmbda)
         self._beta = None
 
     @property
@@ -57,21 +57,4 @@ class LassoRegression:
 
     def predict(self, X_test):
         return self._model.predict(X_test)
-    
-
-class Trainer:
-    """Train model"""
-    def __init__(self, P) -> None:
-        self._P = P
-
-    
-    def train_model(self, model):
-        pass 
-
-
-    def error(self):
-        pass
-
-
-    def plot(self):
-        pass
+ 
