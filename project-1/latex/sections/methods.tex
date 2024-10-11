@@ -1,71 +1,132 @@
 %==============================================================
 \section{Methods}\label{sec:methods}
 % Describe the methods and algorithms used, include any formulas. 
-% Explain how everything is implemented, and possibly mention the structure of the algorithm. Add demonstrations such as tests, selected runs and validations. 
+% Explain how everything is implemented, and possibly mention the structure of the algorithm. 
+% Add demonstrations such as tests, selected runs and validations. 
 %==============================================================
-%------------ Theory ------------------------------------------
-In this project I have studied regression methods to predict terrain, when the model was trained on synthetic data.  
-- Linear regression
-%------------ Data --------------------------------------------
-\subsection{Data}\label{ssec:data}
-To implement the regression methods, I used synthetic data generated from the two-dimensional Franke function \eqref{eq:franke_function}, commonly used as a test function in polynomial fitting. The function was used to generate data, which was used to train and test the models. 
-\begin{equation}\label{eq:franke_function}
-\begin{split}
-    f(x, y) &= \frac{3}{4} \exp(- \frac{(9x-2)^{2}}{4} - \frac{(9y-2)^{2}}{4} ) \\
-    &+ \frac{3}{4} \exp(- \frac{(9x-2)^{2}}{4} - \frac{(9y-2)^{2}}{4} ) \\
-    &+ \frac{3}{4} \exp(- \frac{(9x+1)^{2}}{49} - \frac{(9y+1)}{10} ) \\ 
-    &- \frac{1}{5} \exp(- (9x-4)^{2} - (9y-7)^{2} ) 
-\end{split}, 
+%------------ Linear regression -------------------------------
+\subsection{Linear regression}\label{ssec:linear_regression}
+%------------ Overview ----------------------------------------
+Linear regression is a simple method used to fit a line to a set of data points, with the goal of minimizing the overall error of the fit. The method assumes a linear relationship between the input features $\mathbf{X}$ and the target variable $\mathbf{y}$, and that there exist a function $f$ such that 
+\begin{equation}
+    \mathbf{y} = f(\mathbf{X}) + \epsilon,
 \end{equation}
-where $x, y \in [0, 1]$. I generated data points from a uniform distribution, to ensure a good representation of the domain. The data was not scaled as the input to the function was scaled, resulting in the output being scaled to that domain.
+where $\epsilon \in \mathcal{N}(0, 1)$. The goal of regression analysis is then to exploit this relationship, and approximate the functional relationship by 
+\begin{equation}
+    f(\mathbf{X})_{i} = \sum_{j=0}^{P-1}\mathbf{X}_{i, j} \mathbf{\beta}_{j} ,
+\end{equation}
+where $i$ denotes a given input $\in [0, n-1]$, and $\mathbf{\beta}$ are the regression parameters. The optimal parameters are found by minimizing the error, which is done by calculating the derivative of a cost function. In this project I will focus on three regression methods - Ordinary Least Squares, Ridge, and Lasso regression, each with a different cost functions.
 
-In addition to synthetic data, I tested the models on real terrain data. The real data was generated using the EarthExplorer \cite{usgov:2024:earthexplorer}, with selected World Features. To study the performance of the models on various terrain, I generated data set which included different features. Information on the terrain data can be found in Table \ref{tab:terrain_data}, in Appendix \ref{ap:terrain_data}.
+\subsubsection{Ordinary Least Squares}\label{sssec:ols}
+In Ordinary Least Squares (OLS), the cost function is defined as 
+\begin{equation}\label{eq:ols_cost}
+    C (\mathbf{\beta}) = \frac{1}{n} \big( (\mathbf{y} - \mathbf{X} \mathbf{\beta})^{T} (\mathbf{y} - \mathbf{X} \mathbf{\beta}) \big).
+\end{equation}
+We find the optimal parameters by solving for $\frac{\partial C(\beta)}{\partial \beta} = 0$, which is obtained by solving
+\begin{equation}\label{eq:ols_beta}
+    \mathbf{\beta} = (\mathbf{X}^{T}\mathbf{X})^{-1} \mathbf{X}^{T} \mathbf{y}, 
+\end{equation}
+where the matrix $\mathbf{X}^{T}\mathbf{X}$ is non-singular. However, adding regularization to the matrix can solve the singularity problem.
 
-The terrain data was not preprocessed, which required it to be scaled. I started with standard scaling, and also tested min-max scaling. However, these did not work for only scaling the terrain data values, I standardized the terrain data by subtracting the mean value, and dividing by the standard deviation.
 
-Both the function data and the terrain data was split up in train and test set.
+\subsubsection{Regularization}\label{sssec:regularization}
+Regularization techniques, such as Ridge and Lasso regression, are methods used to prevent overfitting by introducing bias to reduce variance. Regularization can solve the singularity issue that arise when the features are linearly dependent. A penalty is added to $\beta$, the model's coefficients, controlled by a hyper-parameter $\lambda$. When $\lambda$ is set to zero, the model reduces to OLS, and as $\lambda$ increases, the model becomes less sensitive to the input data, helping to improve generalization.
 
-%------------ Regression methods ------------------------------
-\subsection{Regression methods}\label{ssec:regression_methods}
-For problems of a continuous nature, linear regression methods are commonly used, as they provide analytical expressions which can provide statistical insight. 
+In Ridge regression, the cost function is defined as
+\begin{equation}\label{eq:ridge_cost}
+    C (\mathbf{\beta}) = \frac{1}{n} || \mathbf{y} - \mathbf{X} \mathbf{\beta} ||_{2}^{2} + \lambda || \mathbf{\beta} ||_{2}^{2} ,
+\end{equation}
+where $|| \mathbf{\beta} ||_{2}^{2}$ is the norm-2. The optimal parameters are found by solving
+\begin{equation}\label{eq:ridge_beta}
+    \mathbf{\beta} = (\mathbf{X}^{T}\mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y},
+\end{equation}
+where $\mathbf{I}$ is the identity matrix.
 
-The general aim of regression methods are to find a function which describes the data. That is, given a set of data $\mathbf{y}$, the aim is to find a continuous function $f$ which model the data as
-\begin{equation*}
-    \mathbf{y} = f( \mathbf{x} ) + \mathbf{\epsilon}, 
-\end{equation*}
-where $\mathbf{\epsilon} \in \mathcal{N}(0, \sigma^{2})$. In this project I will apply linear regression to find an approximation of the data 
-\begin{equation*}
-    \mathbf{\Tilde{y}} = \mathbf{X} \mathbf{\beta},
-\end{equation*}
-where $\mathbf{\beta}$ are the optimal parameters. More specifically, I want to find the relationship between the input features and the target, by determining the coefficients. 
+Lasso, which stands for Least Absolute Shrinkage and Selection Operator, is similar to Ridge regression. The cost function is defined as 
+\begin{equation}\label{eq:lasso_cost}
+    C (\mathbf{\beta}) = \frac{1}{n} || \mathbf{y} - \mathbf{X} \mathbf{\beta} ||_{2}^{2} + \lambda || \mathbf{\beta} ||_{1} ,
+\end{equation}
+where $|| \mathbf{\beta} ||_{1}$ is the norm-1. This results in a discontinuous derivative of the cost function
+\begin{equation}\label{eq:lasso_beta}
+    \mathbf{\beta} = (\mathbf{X}^{T}\mathbf{X} + n \lambda \mathbf{I})^{-1} \mathbf{X}^{T} \mathbf{y},
+\end{equation}
+which does not give a direct analytical expression as with OLS and Ridge. 
 
-To measure the quality of the model, I define a loss function 
-\begin{equation*}
-    C (\mathbf{\beta}) = \frac{1}{n} \big( (\mathbf{y} - \mathbf{X} \mathbf{\beta})^{T} (\mathbf{y} - \mathbf{X} \mathbf{\beta}) \big)
-\end{equation*}
-
-- approximation by beta
-- cost function
-I set up design matrices to a range of polynomial degrees, and fit the OLS model using function data. 
-I implemented the OLS method and fit the function data, 
-
-- Ridge
-- Lasso
-
-%------------ Resampling methods -------------------------------------------
-\subsection{Resampling techniques}\label{ssec:resampling_techniques}
-- Bootstrap
-- Cross-validation
 
 %------------ Model evaluation --------------------------------
 \subsection{Model evaluation}\label{ssec:evaluation}
-To evaluate the performance of each model, I used both the mean squared error (MSE) and the R$^{2}$-score, where the latter determines the proportion of variance in the dependent variable that can be explained by the independent variable.
+To evaluate the performance of each regression method, I computed the Mean Squared Error (MSE) and R$^{2}$-score for each prediction. MSE is defined as
+\begin{equation}\label{eq:mse}
+    MSE(\mathbf{y}, \mathbf{\Tilde{y}}) = \frac{1}{n} \sum_{i=0}^{n-1} (y_{i} - \Tilde{y}_{i})^{2},
+\end{equation}
+where $\mathbf{\Tilde{y}}$ is the approximated function. This measures the average squared difference between the predicted value and the true value, which makes it sensitive to larger differences. while the R$^{2}$-score is defined as
+\begin{equation}\label{eq:r2}
+    R^{2}(\mathbf{y}, \mathbf{\Tilde{y}}) = 1 - \frac{\sum_{i=0}^{n-1} (y_{i} - \Tilde{y}_{i})^{2}}{\sum_{i=0}^{n-1} (\Tilde{y}_{i} - y_{i})^{2}}.
+\end{equation}
+It indicates the accuracy of the model prediction, where a score of $1$ is a perfect fit.
 
-- Error analysis
-- Bias-variance trade off
+Linear regression relies on the assumption of linearity, however, the distribution of the data is not necessarily known. If we assume a normal distribution of the predictions of OLS regression, we can derive the following expressions for expectation value, and variance
+\begin{align}
+    \label{eq:expected_y}
+    \mathbb{E}(y_{i}) &= \mathbf{X}_{i, *} \mathbf{\beta} \\
+    \label{eq:expected_beta}
+    \mathbb{E}(\beta) &= \mathbf{\beta} \\
+    \label{eq:variance_y}
+    \mathbb{V}(y_{i}) &= \sigma^{2} \\
+    \label{eq:variance_beta}
+    \mathbb{V}(\beta) &= \sigma^{2} (\mathbf{X}^{T} \mathbf{X})^{-1} 
+\end{align}
+These expressions are important in evaluating the bias-variance trade-off of the model's fit, which is done by computing 
+\begin{equation}
+    \mathbb{E}((\mathbf{y} - \mathbf{\Tilde{y}})^{2}) = \mathbb{E}((f(\mathbf{x}) - \mathbb{E}(\mathbf{\Tilde{y}}))^{2}) + \mathbb{V}(\Tilde{y}) + \sigma^{2} .
+\end{equation}
+The full derivation of the bias-variance trade-off expressions can be found in Appendix \ref{ap:bias_var_eq}. The bias term describes how well the model describes our data, whereas the variance describes how the predictions vary for different test data. An optimal model is able to describe the complexity of the data, and generalize to new data, resulting in both low bias and variance.
+
+
+%------------ Resampling methods -------------------------------------------
+\subsection{Resampling methods}\label{ssec:resampling_methods}
+Resampling is often used to overcome the lack of data, or to estimate the distribution of data. Instead of generating synthetic data, we can use the existing data and gain more insight by using for example Bootstrap or Cross-Validation.
+
+\subsubsection{Bootstrap}\label{sssec:bootstrap}
+The bootstrap method generates new data samples based on the original data, by random sampling with replacement. Given a set of $n$ data points
+\begin{equation*}
+    \mathcal{D} = {d_{1}, d_{2}, d_{3}, \dots, d_{n}}
+\end{equation*}
+we can bootstrap $m$ new samples of $n$ data points like
+\begin{align*}
+    \mathcal{D}^{1} &= {d_{1}, d_{n-1}, d_{2}, \dots, d_{1}} \\
+    \mathcal{D}^{2} &= {d_{3}, d_{1}, d_{2}, \dots, d_{n}} \\
+    \mathcal{D}^{3} &= {d_{n}, d_{n-1}, d_{1}, \dots, d_{3}} \\
+    &\vdots \\
+    \mathcal{D}^{m} &= {d_{2}, d_{n}, d_{1}, \dots, d_{2}},
+\end{align*}
+which is then used to evaluate the model. This is a useful method when the distribution of the data is unknown. Assuming that the data is independent and identically distributed (iid), we can estimate the distribution using the Central Limit Theorem \cite{britannica:2024:central_limit_theorem}. As the set of new samples increase to a large number, the mean value will converge to the sample mean.
+
+
+\subsubsection{Cross-Validation}\label{sssec:cross_validation}
+Cross-validation (CV) is a method used to asses if the model generalized to new data. The original data first shuffled randomly, then split into $k$ subset, or folds, where each fold contains a unique group of data point. The model is trained on $k-1$ folds, and tested on the $k$-th fold. The process is repeated $k$ times, after which the performance is calculated as an average MSE over the $K$ predictions. This method uses the entire data set leading to data leakage, which can result in a model that is to optimistic.
+
+
+%------------ Data --------------------------------------------
+\subsection{Data}\label{ssec:data}
+In this project I will evaluate the regression methods in predicting real terrain data. However, during implementation of the regression methods I used synthetic data, generated from the Franke function 
+\begin{equation}\label{eq:franke_function}
+\begin{split}
+    f(x_{1}, x_{2}) &= \frac{3}{4} \exp(- \frac{(9x_{1}-2)^{2}}{4} - \frac{(9x_{2}-2)^{2}}{4} ) \\
+    &+ \frac{3}{4} \exp(- \frac{(9x_{1}-2)^{2}}{4} - \frac{(9x_{2}-2)^{2}}{4} ) \\
+    &+ \frac{3}{4} \exp(- \frac{(9x_{1}+1)^{2}}{49} - \frac{(9x_{2}+1)}{10} ) \\ 
+    &- \frac{1}{5} \exp(- (9x_{1}-4)^{2} - (9x_{2}-7)^{2} ) 
+\end{split}, 
+\end{equation}
+where $x_{1}, x_{2} \in [0, 1]$. This function is often used as a test function in polynomial fitting problems. To introduce variation to the synthetic data, noise was added from a normal distribution $\epsilon \sim \mathcal{N}(0, 0.1)$. I generated data points from a uniform distribution, to ensure a good representation of the domain. The function data was not scaled as the input $x_{1}, x_{2}$ was scaled, resulting in the output being scaled to that domain. This resulted a synthetic data set of size $50 \times 50$.
+
+In addition to synthetic data, I evaluated the models on real terrain data. The terrain data was generated using the EarthExplorer \cite{usgov:2024:earthexplorer}, with selected World Features. To study the performance of the models on various terrain, I generated data set which included different features. Information on the terrain data can be found in Table \ref{tab:terrain_data}, in Appendix \ref{ap:terrain_data}. I did not use the entire data set, instead I used a subset of the same size as the synthetic data set, $50 \times 50$.
+
+The terrain data was not pre-processed, and contained large values compared to the synthetic data, which required features scaling. I used standard scaling, and tested min-max scaling during implementation. Both the synthetic data and the terrain data was split up in train and test set, with a test size of $20\%$.
+
 
 %------------ Tools -------------------------------------------
 \subsection{Tools}\label{ssec:tools}
-All regression methods was implemented in \verb|Python|. However, I used the Lasso regression method from \verb|scikit-learn|, in addition to utility functions for pre-processing data, and evaluating the models. To produce and stylize plots, I used the \verb|matplotlib| and \verb|seaborn| libraries, respectively. In order to explore the function and terrain data during implementation, I used notebooks, as well as some unit tests in \verb|test.py|. 
+All regression methods were implemented in \verb|Python|. However, I used the Lasso regression method from \verb|scikit-learn|, in addition to utility functions for pre-processing data. To produce and stylize plots, I used the \verb|matplotlib| and \verb|seaborn| libraries, respectively. In order to explore the function and terrain data during implementation, I used notebooks, as well as some unit tests in \verb|test.py|. 
 
 During the writing process I used ChatGPT to help translate from Norwegian to English, and to improve the grammar and vocabulary in the text.
