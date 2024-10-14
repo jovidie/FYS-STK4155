@@ -28,6 +28,13 @@ python3 -m pip install -e .
 ```
 
 
+## How to run the experiments
+To run the main experiment, and produce all figures in the report, run the following command:
+```sh
+python3 examples/main.py
+```
+
+
 ## Project 1 structure
 ```sh
 .
